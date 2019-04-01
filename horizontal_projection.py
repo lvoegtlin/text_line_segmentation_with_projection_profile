@@ -31,8 +31,15 @@ def main():
 
     img_name, extension = os.path.splitext(os.path.basename(args.input_image))
 
+    args.output_folder = create_text_line_folder(args.output_folder)
 
     cutWordImages(getVerticalProjectionProfile(img), img, _threshold, _line_threshold, args.output_folder, img_name, extension)
+
+
+def create_text_line_folder(output_folder):
+    output_folder = os.path.join(output_folder, "textLines")
+    os.mkdir(output_folder)
+    return output_folder
 
 
 def getVerticalProjectionProfile(img):
