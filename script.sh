@@ -1,10 +1,15 @@
 #!/bin/bash
 
-inputFolder=${1}
-outputFolder=${2}
-filter=${3}
-white_pixel=${4}
-word_space=${5}
+while getopts :i:o:f:w:s: option; do
+    case $option in
+        i) inputFolder=${OPTARG};;
+        o) outputFolder=${OPTARG};;
+        f) filter=${OPTARG};;
+        w) white_pixel=${OPTARG};;
+        s) word_space=${OPTARG};;
+    esac
+done
+
 
 single_run () {
     # parameters are passed by position
