@@ -15,11 +15,11 @@ single_run () {
 
     # add /input/
     if [ -z "$white_pixel"  ] && [ -z "$word_space" ]; then
-        python horizontal_projection.py --input_image ${inputFile} --output_folder ${outputFolder}
+        python /input/horizontal_projection.py --input_image ${inputFile} --output_folder ${outputFolder}
     elif [ -z "$white_pixel" ]; then
-        python horizontal_projection.py --imput_image ${inputFile} --output_folder ${outputFolder} --word_space ${word_space}
+        python /input/horizontal_projection.py --imput_image ${inputFile} --output_folder ${outputFolder} --word_space ${word_space}
     else
-        python horizontal_projection.py --imput_image ${inputFile} --output_folder ${outputFolder} --word_space ${word_space} --white_pixel ${white_pixel}
+        python /input/horizontal_projection.py --imput_image ${inputFile} --output_folder ${outputFolder} --word_space ${word_space} --white_pixel ${white_pixel}
     fi
 
 }
