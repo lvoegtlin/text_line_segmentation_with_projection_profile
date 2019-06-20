@@ -10,6 +10,8 @@ while getopts :i:o:f:w:s: option; do
     esac
 done
 
+METHOD_NAME="text_segmentation_w_pp"
+
 
 single_run () {
     # parameters are passed by position
@@ -20,13 +22,12 @@ single_run () {
 
     # add /input/
     if [ -z "$white_pixel"  ] && [ -z "$word_space" ]; then
-        python /input/horizontal_projection.py --input_image ${inputFile} --output_folder ${outputFolder}
+        python horizontal_projection.py --input_image ${inputFile} --output_folder ${outputFolder}
     elif [ -z "$white_pixel" ]; then
-        python /input/horizontal_projection.py --imput_image ${inputFile} --output_folder ${outputFolder} --word_space ${word_space}
+        python horizontal_projection.py --imput_image ${inputFile} --output_folder ${outputFolder} --word_space ${word_space}
     else
-        python /input/horizontal_projection.py --imput_image ${inputFile} --output_folder ${outputFolder} --word_space ${word_space} --white_pixel ${white_pixel}
+        python horizontal_projection.py --imput_image ${inputFile} --output_folder ${outputFolder} --word_space ${word_space} --white_pixel ${white_pixel}
     fi
-
 }
 
 # this will always be called and iterates over the input folders
@@ -43,11 +44,13 @@ multi_run () {
     # $4 word_space
     word_space=$5
 
-    # combining the input path with the filder input
+    par_hash=$(create_parameter_hash $white_pixels $word_space)
+
+    # combining the input path with the filter input
     path="/$inputFolder/$filter"
 
     counter=0
-    for file in $(ls $path); do
+    for file in $(find $inputFolder -follow); do
         # if it is a file and not a folder execute the method
         # create the new output folder
 
@@ -58,7 +61,7 @@ multi_run () {
             fileName="${fileName%.*}"
 
             # path for the output folder in the original output folder
-            outputFolder="$outputFolderOri/$fileName"
+            outputFolder="$outputFolderOri$METHOD_NAME-$fileName-$par_hash"
 
             # create the output folder
             mkdir $outputFolder
@@ -83,6 +86,16 @@ multi_run () {
 #        fi
 #        counter=$((counter+1))
 #    done
+}
+
+
+create_parameter_hash () {
+    param_string=""
+    for par in "$@"; do
+        param_string="$param_string-$par"
+    done
+
+    echo $param_string | md5sum | cut -d' ' -f1
 }
 
 
