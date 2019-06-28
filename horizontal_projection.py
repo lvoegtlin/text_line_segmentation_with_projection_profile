@@ -13,10 +13,12 @@ def main():
     parser.add_argument('--white_pixel',
                         required=False,
                         default=10,
+                        type=int,
                         help='the threshold amount of whit pixel per column line')
     parser.add_argument('--line_space',
                         required=False,
                         default=10,
+                        type=int,
                         help='The amount of white spaces between words')
 
     args = parser.parse_args()
